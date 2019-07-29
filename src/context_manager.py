@@ -1,8 +1,9 @@
+from src.constants import *
 
 # with a context manager
 # open each file
 # read a few lines and csv snip
-# possible also sniff/infer data type
+# possible also sniff/infer data typk
 # create a header extract
 # create a named tuple based on header
 # cast each row to the named tuple
