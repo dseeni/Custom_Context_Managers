@@ -1,6 +1,7 @@
 from src.constants import *
 
 # with a context manager
+# iterator with iter method returns iterator with next /iter
 # open each file
 # read a few lines and csv snip
 # possible also sniff/infer data typk
