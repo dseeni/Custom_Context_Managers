@@ -28,33 +28,28 @@ class FileContextManger:
         return False
 
 
-# file_reader = FileContextManger(fnames)
 
-with FileContextManger(fnames) as file_reader:
-    for file in file_reader.file_names:
+
+def sniffer_extract(file_names):
+    for file in file_names:
         with open(file) as f:
             sample = f.read(2000)
             dialect = csv.Sniffer().sniff(sample)
+        return dialect
         # print(vars(dialect))
         # print()
 
-        with open(file) as f:
-            _reader = csv.reader(f, dialect)
-            for row in islice(_reader, 10):
-                print(row)
-            print()
 
-def sniffer_extract(fnames):
-    for file in file_reader.file_names:
-        with open(file) as f:
-            sample = f.read(2000)
-            dialect = Sniffer().sniff(sample)
-        # print(vars(dialect))
-        # print()
+def csv_parser(file_names, sniffer_dialect,  include_header=False):
+    for file_name in file_names:
+        with open(file_name) as f:
+            reader = csv.reader(f, sniffer_dialect)
+            if not include_header:
+                next(f)
+            yield from reader
 
-def csv_parser(fnames, sniffer_dialect,  include_header=False):
-    with open(fnames) as f:
-        reader = csv.reader(f, delimiter=delimiter, quotechar=quotechar)
-        if not include_header:
-            next(f)
-        yield from reader
+
+file_rows = csv_parser(fnames, sniffer_extract(fnames))
+print(list(islice(file_rows, 10)))
+
+
