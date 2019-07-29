@@ -1,5 +1,5 @@
 from src.constants import *
-from csv import Sniffer, reader
+import csv
 from itertools import islice
 
 # with a context manager
@@ -34,19 +34,27 @@ with FileContextManger(fnames) as file_reader:
     for file in file_reader.file_names:
         with open(file) as f:
             sample = f.read(2000)
-            dialect = Sniffer().sniff(sample)
+            dialect = csv.Sniffer().sniff(sample)
         # print(vars(dialect))
         # print()
 
         with open(file) as f:
-            _reader = reader(f, dialect)
+            _reader = csv.reader(f, dialect)
             for row in islice(_reader, 10):
                 print(row)
             print()
 
-def csv_parser(fname, *, delimiter=',', quotechar='"', include_header=False):
-    with open(fname) as f:
+def sniffer_extract(fnames):
+    for file in file_reader.file_names:
+        with open(file) as f:
+            sample = f.read(2000)
+            dialect = Sniffer().sniff(sample)
+        # print(vars(dialect))
+        # print()
+
+def csv_parser(fnames, sniffer_dialect,  include_header=False):
+    with open(fnames) as f:
         reader = csv.reader(f, delimiter=delimiter, quotechar=quotechar)
         if not include_header:
             next(f)
-        yield from reade
+        yield from reader
