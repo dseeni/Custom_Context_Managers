@@ -39,8 +39,8 @@ from collections import namedtuple
 #     reader = csv_parser(fname, include_header=True)
 #     return next(reader)
 #
-for fname in fnames:
-    with FileContextManager(fname) as f:
+for fname, parser, class_name in zip(fnames, parsers, class_names):
+    with FileContextManager(fname, parser, class_name) as f:
         print(*islice(f, 10000000000), sep='\n')
 
 

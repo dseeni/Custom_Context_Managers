@@ -19,16 +19,18 @@ from collections import namedtuple
 
 
 class FileContextManager:
-    def __init__(self, file_name):
+    def __init__(self, file_name, parser, class_name):
         self.file_name = file_name
         self.file_obj = None
         self.reader = None
+        self.parser = parser
+        self.class_name = class_name
 
     def __enter__(self):
         self.file_obj = open(self.file_name)
         self.reader = csv.reader(self.file_obj, self.sniffer_extract(self.file_obj))
         headers = map(lambda l: l.lower(), next(self.reader))
-        self._nt = namedtuple('Data', headers)
+        self._nt = namedtuple(self.class_name, headers)
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -43,7 +45,9 @@ class FileContextManager:
             print('end of file reached')
             raise StopIteration
         else:
-            return self._nt(*(next(self.reader)))
+            data = next(self.reader)
+            zipped = (fn(value) for value, fn in zip(data, self.parser))
+            return self._nt(*zipped)
 
     @staticmethod
     def sniffer_extract(file_obj):
