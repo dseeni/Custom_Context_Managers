@@ -1,20 +1,6 @@
 import csv
 from collections import namedtuple
 
-# with a context manager
-# iterator with iter method returns iterator with next /iter
-# open each file
-# read a few lines and csv snip
-# possible also sniff/infer data type
-# create a header extract
-# create a named tuple based on header
-# cast each row to the named tuple
-# view current files in context
-# if stop iteration, remove file from file que
-# store named tuple for each file
-# read the next row of each file
-# cast data types
-
 
 class FileContextManager:
     def __init__(self, file_name, parser, class_name):
@@ -27,7 +13,7 @@ class FileContextManager:
     def __enter__(self):
         self.file_obj = open(self.file_name)
         self.reader = csv.reader(self.file_obj,
-                                 self.sniffer_extract(self.file_obj))
+                                 self.get_dialect(self.file_obj))
         headers = map(lambda l: l.lower(), next(self.reader))
         self._nt = namedtuple(self.class_name, headers)
         return self
@@ -49,7 +35,7 @@ class FileContextManager:
             return self._nt(*zipped)
 
     @staticmethod
-    def sniffer_extract(file_obj):
+    def get_dialect(file_obj):
         sample = file_obj.read(2000)
         dialect = csv.Sniffer().sniff(sample)
         file_obj.seek(0)
