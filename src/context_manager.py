@@ -1,6 +1,4 @@
-from src.constants import *
 import csv
-from itertools import islice
 from collections import namedtuple
 
 # with a context manager
@@ -28,7 +26,8 @@ class FileContextManager:
 
     def __enter__(self):
         self.file_obj = open(self.file_name)
-        self.reader = csv.reader(self.file_obj, self.sniffer_extract(self.file_obj))
+        self.reader = csv.reader(self.file_obj,
+                                 self.sniffer_extract(self.file_obj))
         headers = map(lambda l: l.lower(), next(self.reader))
         self._nt = namedtuple(self.class_name, headers)
         return self
