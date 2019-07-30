@@ -21,12 +21,17 @@ class FileContextManager:
     def __init__(self, file_names: tuple, header=False): # filenames to iterate over as tuple
         self.file_names = file_names
         self.header = header
+        self.file_objects = [open(file_name) for file_name in self.file_names]
 
     def __enter__(self):
         # enter context and return new instances of an iterator per file
+        print('Returning a new iterator')
         return iter(self)
 
     def __exit__(self, exc_type, exc_val, exc_tb):
+        print('closing files')
+        for f in self.file_objects:
+            f.close()
         return False
 
     def __iter__(self):
@@ -36,24 +41,23 @@ class FileContextManager:
         def __init__(self, file_context_manager):
             self.file_context_manager = file_context_manager
             self.file_names = self.file_context_manager.file_names
+            self.file_objects = file_context_manager.file_objects
             # print(self.file_names)
 
         def __iter__(self):
-            # print('Calling PolyIterator instance __iter__')
+            print('Calling FileIterator instance __iter__')
             return self
 
         def __next__(self):
-            return self.csv_parser(self.sniffer_extract(), include_header=self.file_context_manager.header)
-                    # for row in f:
-                    #     print(row)
-            # # print('Calling __next__')
-            # if self._index >= self.poly_obj.__len__():
-            #     raise StopIteration
-            # else:
-            #     item = Poly(self.poly_obj.polygons[self._index][0], self.poly_obj.polygons[self._index][1])
-            #     self._index += 1
-            #     return item
-            # raise StopIteration
+            for obj in self.file_objects:
+                # f = open(file_name)
+                reader = csv.reader(obj, self.sniffer_extract())
+                while True:
+                    try:
+                        print(next(obj))
+                    except StopIteration:
+                        break
+            # return self.csv_parser(self.sniffer_extract(), include_header=self.file_context_manager.header)
 
         def sniffer_extract(self):
             for file in self.file_names:
@@ -64,11 +68,13 @@ class FileContextManager:
 
         def csv_parser(self, sniffer_dialect,  include_header=False):
             for file_name in self.file_names:
-                with open(file_name) as f:
-                    reader = csv.reader(f, sniffer_dialect)
-                    if not include_header:
+                f = open(file_name)
+                reader = csv.reader(f, sniffer_dialect)
+                while True:
+                    try:
                         next(f)
-                    yield from reader
+                    except StopIteration:
+                        break
 
 
 
