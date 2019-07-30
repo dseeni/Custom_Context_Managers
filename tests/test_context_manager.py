@@ -1,2 +1,5 @@
-def test_test():
+from src.context_manager import *
+
+
+def test_FileContextManger():
     pass
