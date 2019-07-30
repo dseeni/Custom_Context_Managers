@@ -38,7 +38,13 @@ from collections import namedtuple
 # def extract_field_names(fname):
 #     reader = csv_parser(fname, include_header=True)
 #     return next(reader)
+#
+rows = []
+for fname, parser, class_name in zip(fnames, parsers, class_names):
+    with FileContextManager(fname, parser, class_name) as f:
+        rows.append(next(f))
 
-with FileContextManager(fnames, True) as f:
-    print(*islice(next(f), 100000), sep='\n')
+    print(rows)
+
+print(rows[0].ssn, rows[1].horsepower)
 
