@@ -39,22 +39,8 @@ from collections import namedtuple
 #     reader = csv_parser(fname, include_header=True)
 #     return next(reader)
 #
-with FileContextManager(fnames, True) as f:
-    print(*list(next(f)), sep='\n')
-    # for row in f:
-    #     print(row)
-    # for row in f:
-    #     print(next(row))
+for fname in fnames:
+    with FileContextManager(fname) as f:
+        print(*islice(f, 10000000000), sep='\n')
 
-# f = FileContextManager(fnames, True)
-# print(next(iter(f)))
-# print(f.file_objects[0].closed)
 
-# f = open(fnames[0])
-# while True:
-#     try:
-#         print(next(f))
-#     except StopIteration:
-#         print('stop')
-#         break
-# for i in range(100000): #     print(next(f))
