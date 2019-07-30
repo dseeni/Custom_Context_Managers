@@ -1,7 +1,8 @@
 from src.context_manager import *
 from src.constants import *
-from csv import Sniffer, reader
+import csv
 from itertools import islice
+from collections import namedtuple
 
 # file_reader = FileContextManger(fnames)
 
@@ -21,13 +22,19 @@ from itertools import islice
 
 with open(fnames[0]) as f:
     sample = f.read(2000)
-    dialect = Sniffer().sniff(sample)
+    dialect = csv.Sniffer().sniff(sample)
 print(vars(dialect))
 
 with open(fnames[0]) as f:
-    _reader = reader(f, dialect)
+    _reader = csv.reader(f, dialect)
     for row in islice(_reader, 10):
         print(row)
 
 
+def create_named_tuple_class(fname, class_name):
+    fields = extract_field_names(fname)
+    return namedtuple(class_name, fields)
 
+def extract_field_names(fname):
+    reader = csv_parser(fname, include_header=True)
+    return next(reader)
