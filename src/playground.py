@@ -40,8 +40,11 @@ from collections import namedtuple
 #     return next(reader)
 #
 with FileContextManager(fnames, True) as f:
-    # print(*islice(next(f), 100000), sep='\n')
-        print(next(f))
+    print(*list(next(f)), sep='\n')
+    # for row in f:
+    #     print(row)
+    # for row in f:
+    #     print(next(row))
 
 # f = FileContextManager(fnames, True)
 # print(next(iter(f)))

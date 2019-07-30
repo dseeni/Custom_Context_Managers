@@ -25,8 +25,7 @@ class FileContextManager:
 
     def __enter__(self):
         # enter context and return new instances of an iterator per file
-        print('Returning a new iterator')
-        return iter(self)
+            return iter(self)
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         print('closing files')
@@ -50,21 +49,18 @@ class FileContextManager:
 
         def __next__(self):
             for obj in self.file_objects:
-                # f = open(file_name)
-                reader = csv.reader(obj, self.sniffer_extract())
-                while True:
-                    try:
-                        print(next(obj))
-                    except StopIteration:
-                        break
+                reader = csv.reader(obj, self.sniffer_extract(obj))
+                return reader
+                # else:
+                # return reader
             # return self.csv_parser(self.sniffer_extract(), include_header=self.file_context_manager.header)
 
-        def sniffer_extract(self):
-            for file in self.file_names:
-                with open(file) as f:
-                    sample = f.read(2000)
-                    dialect = csv.Sniffer().sniff(sample)
-                return dialect
+        @staticmethod
+        def sniffer_extract(file_obj):
+            sample = file_obj.read(2000)
+            dialect = csv.Sniffer().sniff(sample)
+            file_obj.seek(0)
+            return dialect
 
         def csv_parser(self, sniffer_dialect,  include_header=False):
             for file_name in self.file_names:
