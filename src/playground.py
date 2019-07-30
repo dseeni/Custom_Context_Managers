@@ -47,4 +47,4 @@ for fname, parser, class_name in zip(fnames, parsers, class_names):
     print(rows)
 
 print(rows[0].ssn, rows[1].horsepower)
-
+print(dir(f))
