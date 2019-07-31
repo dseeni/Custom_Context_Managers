@@ -1,8 +1,6 @@
 import csv
 from collections import namedtuple
 from contextlib import contextmanager
-from src.constants import *
-from itertools import islice
 
 
 def get_dialect(file_obj):
