@@ -34,9 +34,3 @@ def gen_file_context_manager(file_name, single_parser, single_class_name):
             pass
         # print('closing file')
         file_obj.close()
-
-
-for fname, parser, class_name in zip(fnames, parsers, class_names):
-    with gen_file_context_manager(fname, parser, class_name) as f:
-        print('39:', *list(islice(f, 100000)), sep='\n')
-        # print(next(f))
