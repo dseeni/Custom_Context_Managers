@@ -10,3 +10,8 @@ def set_test_directory():
 @fixture('function')
 def create_context_manager():
     pass
+
+
+@fixture('function')
+def create_gen_context_manager():
+    pass
