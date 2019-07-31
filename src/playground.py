@@ -1,4 +1,5 @@
 from src.context_manager import *
+from src.gen_context_manager import *
 from src.constants import *
 import csv
 from itertools import islice, chain
@@ -39,12 +40,12 @@ from collections import namedtuple
 #     reader = csv_parser(fname, include_header=True)
 #     return next(reader)
 #
-rows = []
-for fname, parser, class_name in zip(fnames, parsers, class_names):
-    with FileContextManager(fname, parser, class_name) as f:
-        rows.append(next(f))
-
-    print(rows)
-
-print(rows[0].ssn, rows[1].horsepower)
+# rows = []
+# for fname, parser, class_name in zip(fnames, parsers, class_names):
+#     with FileContextManager(fname, parser, class_name) as f:
+#         rows.append(next(f))
+#
+#     print(rows)
+#
+# print(rows[0].ssn, rows[1].horsepower)
 
