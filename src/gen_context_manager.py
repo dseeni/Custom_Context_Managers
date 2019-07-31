@@ -20,11 +20,14 @@ def gen_file_context_manager(file_name, single_parser, single_class_name):
     def cast_row():
         headers = map(lambda l: l.lower(), next(reader))
         DataTuple = namedtuple(single_class_name, headers)
-        for _ in reader:
-            row = next(reader)
-            zipped = (fn(value) for value, fn in zip(row, single_parser))
-            parsed = DataTuple(*zipped)
-            yield parsed
+        while True:
+            try:
+                row = next(reader)
+                zipped = (fn(value) for value, fn in zip(row, single_parser))
+                parsed = DataTuple(*zipped)
+                yield parsed
+            except StopIteration:
+                break
     try:
         yield cast_row()
     finally:
