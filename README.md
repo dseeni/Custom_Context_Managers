@@ -2,10 +2,14 @@
 
 ### Python Context Managers: 
 
-- Manages multiple file resources    
+- Create 2 File Context Managers:
+    - [x] as an Iterator via the iterator protocol 
+    
+    - [x] as a Generator via the Generator protocol 
 
-- Concatenates data rows from each and parses data types
 
-- Returns namedtuples for each row with respective field names 
+- Returns namedtuples for each row with respective field names and parsed data
+
+- Utilize csv.Sniffer to determined the delimitter
 
 
