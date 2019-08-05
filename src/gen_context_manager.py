@@ -6,9 +6,9 @@ from contextlib import contextmanager
 @contextmanager
 def gen_file_context_manager(file_name, single_parser, single_class_name):
     file_obj = open(file_name)
-    dialect = csv.Sniffer().sniff(file_obj.read(2000))
-    file_obj.seek(0)
     try:
+        dialect = csv.Sniffer().sniff(file_obj.read(2000))
+        file_obj.seek(0)
         reader = csv.reader(file_obj, dialect)
         headers = map(lambda l: l.lower(), next(reader))
         DataTuple = namedtuple(single_class_name, headers)
