@@ -1,6 +1,4 @@
-# Python Deep Dive Part 2 Project 5
-
-### Python Context Managers: 
+# Python Context Managers: 
 
 - Create 2 File Context Managers:
     - [x] as an Iterator via the Iterator Protocol 
